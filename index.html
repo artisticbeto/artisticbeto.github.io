@@ -87,6 +87,7 @@
         white-space: nowrap;
         font-size: 48px;
         line-height: 1.2;
+        direction: ltr;
       }
       .studio .displaytrans {
         transform: translateY(1.328vh);
@@ -130,6 +131,7 @@
         z-index: 100;
         mix-blend-mode: difference;
         pointer-events: none;
+        direction: ltr;
       }
       .studio .nav-container {
         display: flex;
@@ -237,6 +239,73 @@
       .studio .work-links.is-open .work-dropcontent,
       .studio .work-links:hover .work-select,
       .studio .work-links.is-open .work-select {
+        display: block;
+        background: var(--studio-line);
+      }
+      .studio .lang-links {
+        position: relative;
+        display: inline-block;
+      }
+      .studio .lang-select {
+        background: transparent;
+        color: var(--studio-bone);
+        border: none;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        cursor: pointer;
+        padding: 0.664vh;
+        font: inherit;
+        letter-spacing: inherit;
+        text-transform: inherit;
+        margin-left: 15px;
+        font-size: 2.3vh;
+      }
+      .studio .lang-dropcontent {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: var(--studio-line);
+        min-width: 65px;
+        z-index: 1;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        margin-top: 0px;
+        margin-left: 15px;
+        padding-top: 0px;
+        padding-bottom: 2px;
+        isolation: isolate;
+        mix-blend-mode: normal;
+        font-size: 1.8vh;
+      }
+      .studio .lang-dropcontent::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 0;
+        right: 0;
+        height: 10px;
+      }
+      .studio .lang-dropcontent a {
+        padding: 6px 10px;
+        text-decoration: none;
+        display: block;
+        color: var(--studio-bone);
+        visibility: visible;
+        opacity: 1;
+      }
+      .studio .lang-dropcontent a:hover,
+      .studio .lang-dropcontent a:focus-visible {
+        color: var(--studio-clay);
+      }
+      .studio .lang-select:hover {
+        color: var(--studio-clay);
+      }
+      .studio .lang-links:hover .lang-dropcontent,
+      .studio .lang-links.is-open .lang-dropcontent,
+      .studio .lang-links:hover .lang-select,
+      .studio .lang-links.is-open .lang-select {
         display: block;
         background: var(--studio-line);
       }
@@ -455,6 +524,7 @@
         position: relative;
         overflow: hidden;
         transition: height 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+        direction: ltr;
       }
       .studio .gallery {
         display: grid;
@@ -761,6 +831,7 @@
         display: grid;
         grid-template-columns: 1.4fr 1fr;
         gap: 60px;
+        direction: ltr;
       }
       .studio #viewer-canvas-holder {
         position: relative;
@@ -901,6 +972,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 2px;
+        direction: ltr;
       }
       .studio .motion-item {
         aspect-ratio: 9/12;
@@ -955,6 +1027,7 @@
         grid-template-columns: 1fr 1fr;
         gap: 60px;
         align-items: start;
+        direction: ltr;
       }
       .studio .about-figure {
         aspect-ratio: 4/5;
@@ -984,6 +1057,7 @@
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 24px;
+        direction: ltr;
       }
       .studio footer .display {
         font-size: clamp(30px, 5.2vw, 60px);
@@ -1223,18 +1297,27 @@
   <svg class="nav-svg" xmlns="http://www.w3.org/2000/svg">
     <foreignObject class="fobject">
       <div xmlns="http://www.w3.org/1999/xhtml" class="nav-container">
-        <a href="#" class="logo display" id="logo-home" aria-label="Back to top">Beto*</a>
-        <div class="links mono">
-          <div class="work-links" id="work-links">
-            <button class="work-select" id="work-select" aria-haspopup="true" aria-expanded="false">WORK ▼</button>
-            <div class="work-dropcontent" role="menu">
-              <a href="#work" role="menuitem">Gallery</a>
-              <a href="#motion" role="menuitem">Motion</a>
-              <a href="#viewer" role="menuitem">3D/Mesh</a>
+        <div>
+          <a href="#" class="logo display" id="logo-home" aria-label="Back to top">Beto*</a>
+          <div class="lang-links" id="lang-links">
+            <button class="lang-select" id="lang-select" aria-haspopup="true" aria-expanded="false">EN ▼</button>
+            <div class="lang-dropcontent" role="menu">
+              <a href="#" role="menuitem" data-lang="en">English</a>
+              <a href="#" role="menuitem" data-lang="ar">Arabic</a>
             </div>
           </div>
-          <a href="#about">About</a>
-          <a href="#socials">Socials 🌐︎</a>
+        </div>
+        <div class="links mono">
+          <div class="work-links" id="work-links">
+            <button class="work-select" id="work-select" aria-haspopup="true" aria-expanded="false" data-en="WORK ▼" data-ar="الأعمال ▼">WORK ▼</button>
+            <div class="work-dropcontent" role="menu">
+              <a href="#work" role="menuitem" data-en="Gallery" data-ar="المعرض">Gallery</a>
+              <a href="#motion" role="menuitem" data-en="Motion" data-ar="الحركة">Motion</a>
+              <a href="#viewer" role="menuitem" data-en="3D/Mesh" data-ar="ثلاثي الأبعاد">3D/Mesh</a>
+            </div>
+          </div>
+          <a href="#about" data-en="About" data-ar="نبذة">About</a>
+          <a href="#socials" data-en="Socials 🌐︎" data-ar="التواصل 🌐︎">Socials 🌐︎</a>
         </div>
       </div>
     </foreignObject>
@@ -1246,7 +1329,7 @@
       <div class="jobsytrans">
         <svg class="jobsy" viewBox="0 0 600 30" width="100%" height="30" aria-label="Film Maker · 3D-Designer · Editor">
 <style>.jobsy-text{font-family:Arial,sans-serif;font-size:19.75px;letter-spacing:0.08em;text-transform:uppercase;fill:var(--studio-clay);text-anchor:middle;dominant-baseline:middle;filter:drop-shadow(0 0 12px rgba(185,113,218,0.8))}</style>
-          <text x="50%" y="50%" class="jobsy-text glowy">Film Maker · 3D-Designer · Editor</text>
+          <text x="50%" y="50%" class="jobsy-text glowy" data-en="Film Maker · 3D-Designer · Editor" data-ar="صانع أفلام · مصمم ثلاثي الأبعاد · محرر">Film Maker · 3D-Designer · Editor</text>
         </svg>
       </div>
       <div class="displaytrans">
@@ -1257,11 +1340,11 @@
       <div class="subtrans">
         <svg class="sub-all" viewBox="0 0 900 60" width="100%" height="60" aria-label="A working archive of art, 3D and film — canvases, fragments, and the objects that outgrow them. Scattered between the SCREEN & STUDIO.">
 <style>.sub-text1,.sub-text2{font-family:Arial,sans-serif;font-size:16px;fill:#aba59d;text-anchor:middle;dominant-baseline:middle}.glow-screen{fill:var(--studio-clay);font-weight:bold;filter:drop-shadow(0 0 8px rgba(185,113,218,0.8))}.studio .sub-text1{transform:translateX(50%) translateY(30%)}.studio .sub-text2{transform:translateX(50%) translateY(70%)}</style>
-          <text class="sub-text1">
+          <text class="sub-text1" id="sub-text1" data-en="A working archive of art, 3D and film, canvases, fragments, and the objects that outgrow" data-ar="أرشيف عمل من الفن والتصميم ثلاثي الأبعاد والأفلام، لوحات وشظايا وأشياء تكبر">
             A working archive of art, 3D and film — canvases, fragments, and the objects that outgrow
           </text>
-          <text class="sub-text2">
-            them. Scattered between the <tspan class="glow-screen glowy">SCREEN</tspan> &amp; <tspan class="glow-screen glowy">STUDIO</tspan>.
+          <text class="sub-text2" id="sub-text2">
+            <tspan id="sub-text2-pre" data-en="them. Scattered between the " data-ar="عنها. متناثرة بين ">them. Scattered between the </tspan><tspan class="glow-screen glowy" id="sub-text2-screen" data-en="SCREEN" data-ar="الشاشة">SCREEN</tspan><tspan id="sub-text2-mid" data-en=" &amp; " data-ar=" &amp; "> &amp; </tspan><tspan class="glow-screen glowy" id="sub-text2-studio" data-en="STUDIO" data-ar="الاستوديو">STUDIO</tspan><tspan id="sub-text2-end" data-en="." data-ar=".">.</tspan>
           </text>
         </svg>
       </div>
@@ -1269,8 +1352,8 @@
   </section>
   <section id="work">
     <div class="section-head">
-      <h2 class="display reveal-left">Archive</h2>
-      <div class="num mono reveal-up" style="--rd:.15s">01 — Gallery</div>
+      <h2 class="display reveal-left" data-en="Archive" data-ar="الأرشيف">Archive</h2>
+      <div class="num mono reveal-up" style="--rd:.15s" data-en="01 — Gallery" data-ar="المعرض — 01">01 — Gallery</div>
     </div>
     <div class="gallery-container is-collapsed" id="gallery-container">
       <div class="gallery" id="gallery"></div>
@@ -1278,22 +1361,22 @@
   </section>
   <section id="motion">
     <div class="section-head">
-      <h2 class="display reveal-left">In motion</h2>
-      <div class="num mono reveal-up" style="--rd:.15s">02 — Process</div>
+      <h2 class="display reveal-left" data-en="In motion" data-ar="في حركة">In motion</h2>
+      <div class="num mono reveal-up" style="--rd:.15s" data-en="02 — Process" data-ar="العملية — 02">02 — Process</div>
     </div>
     <div class="motion-strip" id="motion-strip"></div>
   </section>   
   <section id="viewer" class="viewer-section">
     <div class="section-head">
-      <h2 class="display reveal-right">Object viewer</h2>
-      <div class="num mono reveal-up" style="--rd:.15s">03 — Dimensional</div>
+      <h2 class="display reveal-right" data-en="Object viewer" data-ar="عارض الأجسام">Object viewer</h2>
+      <div class="num mono reveal-up" style="--rd:.15s" data-en="03 — Dimensional" data-ar="الأجسام — 03">03 — Dimensional</div>
     </div>
     <div class="viewer-wrap">
       <div id="viewer-canvas-holder">
-        <div class="viewer-hint mono">Drag to rotate · Scroll to zoom</div>
+        <div class="viewer-hint mono" data-en="Drag to rotate · Scroll to zoom" data-ar="اسحب للتدوير · مرّر للتكبير">Drag to rotate · Scroll to zoom</div>
       </div>
       <div class="viewer-controls">
-        <p class="reveal-up">
+        <p class="reveal-up" data-en="Every flat piece has a body. This viewer has most if not all of my 3D-work floating in real space, rotate, inspect the grain, watch the light move across the paint." data-ar="لكل قطعة مسطّحة جسد. يضم هذا العارض معظم إن لم يكن كل أعمالي ثلاثية الأبعاد وهي تطفو في فضاء حقيقي، فدوّرها وتفحّص نسيجها وراقب الضوء وهو يتحرك عبر الطلاء.">
           Every flat piece has a body. This viewer has most if not all of my 3D-work floating in real
           space, rotate, inspect the grain, watch the light move across the paint.
         </p>
@@ -1305,14 +1388,14 @@
     <div class="about-grid">
       <div class="about-figure" id="about-figure"></div>
       <div class="about-text">
-        <div class="display reveal-right">About me</div>
-        <p class="reveal-up">
+        <div class="display reveal-right" data-en="About me" data-ar="نبذة عني">About me</div>
+        <p class="reveal-up" data-en="The name is Beto. I works across painting, editing and digital form, treating the canvas as one material among many. The current body of work moves between 3D-Enviroment and Compositing, built in layers and often re-thought, re-built, re-rendered until the project meet the suited quality." data-ar="اسمي بيتو. أعمل بين الرسم والمونتاج والتصميم الرقمي، متعاملاً مع اللوحة كمادة واحدة من مواد عديدة. تتنقل أعمالي الحالية بين البيئات ثلاثية الأبعاد والتركيب المرئي، مبنيّة على طبقات وغالباً ما يُعاد التفكير فيها وبناؤها وعرضها حتى يصل المشروع إلى الجودة المطلوبة.">
           The name is Beto. I works across painting, editing and digital form, treating the canvas as one
           material among many. The current body of work moves between 3D-Enviroment and
           Compositing, built in layers and often re-thought, re-built, re-rendered until
           the project meet the suited quality.
         </p>
-        <p class="reveal-up" style="--rd:.12s">
+        <p class="reveal-up" style="--rd:.12s" data-en="Studio views, works-in-progress and finished pieces are documented on Instagram, where it's also going to be behind the scenes." data-ar="تُوثَّق لقطات الاستوديو والأعمال قيد التنفيذ والقطع المنجزة على إنستغرام، حيث ستُنشر أيضاً كواليس العمل.">
           Studio views, works-in-progress and finished pieces are documented on Instagram,
           where it's also going to be behind the scenes.
         </p>
@@ -1320,7 +1403,7 @@
     </div>
   </section>
   <footer id="socials">
-    <div class="display reveal-left">Let's talk.</div>
+    <div class="display reveal-left" data-en="Let's talk." data-ar="لنتحدث.">Let's talk.</div>
     <div class="foot-links reveal-up">
       <a href="https://www.instagram.com/artistic.beto/" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram">
         <span class="social-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></span>
@@ -1344,7 +1427,7 @@
       </a>
     </div>
   </footer>
-  <div class="copyright display mono">© 2026 Beto Studio — all works reserved</div>
+  <div class="copyright display mono" data-en="© 2026 Beto Studio — all works reserved" data-ar="© 2026 استوديو بيتو — جميع الأعمال محفوظة">© 2026 Beto Studio — all works reserved</div>
 </div>
 <script>(function(){
 "use strict";
@@ -2301,6 +2384,50 @@ entry.target.classList.remove("in-view");
 });
 }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
 els.forEach((el) => io.observe(el));
+})();
+(function(){
+  const langSelect = document.getElementById("lang-select");
+  const langLinks = document.getElementById("lang-links");
+  const langOptions = langLinks.querySelectorAll('[data-lang]');
+  const translatable = document.querySelectorAll('[data-en]');
+  const labels = { en: "EN ▼", ar: "AR ▼" };
+  let currentLang = "en";
+
+  function applyLang(lang) {
+    if (lang !== "en" && lang !== "ar") return;
+    currentLang = lang;
+    document.documentElement.setAttribute("lang", lang);
+    document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+    translatable.forEach((el) => {
+      const text = el.getAttribute(lang === "ar" ? "data-ar" : "data-en");
+      if (text !== null) el.textContent = text;
+    });
+    langSelect.textContent = labels[lang];
+    langSelect.setAttribute("aria-expanded", "false");
+    langOptions.forEach((opt) => {
+      opt.setAttribute("aria-current", opt.dataset.lang === lang ? "true" : "false");
+    });
+    langLinks.classList.remove("is-open");
+  }
+
+  langOptions.forEach((opt) => {
+    opt.addEventListener("click", (e) => {
+      e.preventDefault();
+      applyLang(opt.dataset.lang);
+    });
+  });
+
+  // Touch/tap support to mirror the Work dropdown's hover-based interaction on touch devices
+  langSelect.addEventListener("click", (e) => {
+    e.preventDefault();
+    langLinks.classList.toggle("is-open");
+    langSelect.setAttribute("aria-expanded", langLinks.classList.contains("is-open") ? "true" : "false");
+  });
+  document.addEventListener("click", (e) => {
+    if (!langLinks.contains(e.target)) langLinks.classList.remove("is-open");
+  });
+
+  applyLang("en");
 })();
 })();</script>
 </body>
