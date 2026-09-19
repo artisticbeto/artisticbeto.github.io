@@ -7,9 +7,7 @@
 <meta name="description" content="Pablo Betosso — film maker, 3D designer and editor. A working archive of art, 3D and film, scattered between the screen and the studio." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
       * {
         box-sizing: border-box;
@@ -29,10 +27,10 @@
         --scanline-count: 15;
         --scanline-color: #0f0e0d;
         --animlines-main: #322f2b;
-        --particle-count: 45;
+        --particle-count: 22;
         --particle-main: #50ff00;
         --particle-sub: #00f3ff;
-        --particle-glow-radius: 4px;
+        --particle-glow-radius: 0px;
         --particle-brightness: 2;
       }
       #studio-bg-canvas {
@@ -1142,7 +1140,7 @@
         opacity: 1;
         transform: none;
       }
-      @media (prefers-reduced-motion: reduce) {
+      @media (prefers-reduced-motion: no-preference) {
         .studio .jobsy,
         .studio .hero h1,
         .studio .sub-all {
@@ -1461,8 +1459,16 @@ targetMouseY = e.clientY;
 });
 const glow = document.querySelector('.global-mouse-glow');
 if (glow) {
+let glowPending = false, glowX = 0, glowY = 0;
 document.addEventListener('mousemove', (e) => {
-glow.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+glowX = e.clientX;
+glowY = e.clientY;
+if (glowPending) return;
+glowPending = true;
+requestAnimationFrame(() => {
+glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0)`;
+glowPending = false;
+});
 });
 }
 function getCssVar(varName, defaultValue = '#b971da') {
@@ -1514,9 +1520,13 @@ document.addEventListener('visibilitychange', () => {
 bgVisible = !document.hidden;
 if (bgVisible) requestAnimationFrame(renderBg);
 });
-function renderBg() {
+let lastBgFrame = 0;
+const bgFrameInterval = 1000 / 30;
+function renderBg(ts) {
 if (!bgVisible) return;
 requestAnimationFrame(renderBg);
+if (ts - lastBgFrame < bgFrameInterval) return;
+lastBgFrame = ts;
 time += 0.01;
 mouseX += (targetMouseX - mouseX) * 0.15;
 mouseY += (targetMouseY - mouseY) * 0.15;
@@ -1566,7 +1576,7 @@ ctx.fill();
 ctx.shadowBlur = 0;
 ctx.globalAlpha = 1;
 }
-renderBg();
+requestAnimationFrame(renderBg);
 })();
 (function(){
 const logo = document.getElementById("logo-home");
@@ -1923,7 +1933,7 @@ img.style.height = "100%";
 img.style.objectFit = "cover";
 holder.appendChild(img);
 })();
-(function(){
+function initViewer(){
 const holder = document.getElementById("viewer-canvas-holder");
 const listEl = document.getElementById("piece-list");
 const piecesData = [
@@ -2024,7 +2034,7 @@ const scene = new THREE.Scene();
 let w = holder.clientWidth, h = holder.clientHeight;
 const camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(w, h, false);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
@@ -2230,7 +2240,7 @@ function resizeViewer() {
   if (!w2 || !h2) return;
   camera.aspect = w2 / h2;
   camera.updateProjectionMatrix();
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setSize(w2, h2, false);
 }
 window.addEventListener("resize", resizeViewer);
@@ -2238,14 +2248,18 @@ if (window.ResizeObserver) {
   new ResizeObserver(resizeViewer).observe(holder);
 }
 
-let viewerVisible = true;
+let viewerInView = true;
 new IntersectionObserver((entries) => {
-  entries.forEach((entry) => { viewerVisible = entry.isIntersecting; });
-  if (viewerVisible) requestAnimationFrame(animate);
+  entries.forEach((entry) => { viewerInView = entry.isIntersecting; });
+  if (viewerInView && !document.hidden) requestAnimationFrame(animate);
 }, { threshold: 0.01 }).observe(holder);
 
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && viewerInView) requestAnimationFrame(animate);
+});
+
 function animate() {
-  if (!viewerVisible) return;
+  if (!viewerInView || document.hidden) return;
   requestAnimationFrame(animate);
   rotY += (targetRotY - rotY) * 0.08;
   rotX += (targetRotX - rotX) * 0.08;
@@ -2359,12 +2373,38 @@ viewport.addEventListener("pointercancel", stopCarouselDrag);
 
 updateCarousel();
 loadPiece(piecesData[0]);
-})();document.addEventListener('mousemove', (e) => {
-const xPercent = (e.clientX / window.innerWidth) * 100;
-const yPercent = (e.clientY / window.innerHeight) * 100;
-document.documentElement.style.setProperty('--bg-x', `${xPercent}%`);
-document.documentElement.style.setProperty('--bg-y', `${yPercent}%`);
-});
+}
+(function(){
+  const holder = document.getElementById("viewer-canvas-holder");
+  if (!holder) return;
+  let started = false;
+  function loadScriptsThenInit() {
+    if (started) return;
+    started = true;
+    const s1 = document.createElement("script");
+    s1.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+    s1.onload = () => {
+      const s2 = document.createElement("script");
+      s2.src = "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js";
+      s2.onload = initViewer;
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
+  }
+  if ("IntersectionObserver" in window) {
+    const preloadObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          preloadObserver.disconnect();
+          loadScriptsThenInit();
+        }
+      });
+    }, { rootMargin: "600px 0px", threshold: 0 });
+    preloadObserver.observe(holder);
+  } else {
+    loadScriptsThenInit();
+  }
+})();
 function resizeCanvas() {
 const canvas = document.getElementById('studio-bg-canvas');
 canvas.width = window.innerWidth;
