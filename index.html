@@ -2470,5 +2470,16 @@ els.forEach((el) => io.observe(el));
   applyLang("en");
 })();
 })();</script>
+<script>
+  // Register service worker: caches fonts, three.js/GLTFLoader, and .glb models
+  // in the browser so repeat visits load instantly from cache instead of the network.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch((err) => {
+        console.warn("Service worker registration failed:", err);
+      });
+    });
+  }
+</script>
 </body>
 </html>
