@@ -1212,38 +1212,58 @@
           font-size: 13.75px !important;
         }
 
+        .studio .sub-text1, .studio .sub-text2 {
+          font-size: 7px !important;
+        }
+
         .studio .nav-container .logo {
-          font-size: 10px !important;
+          font-size: 25px !important;
+        }
+        
+        .studio .nav-container .links {
+          gap: 8px !important;
+          font-size: 16px !important;
         }
 
         .studio .lang-select {
-          font-size: 36px !important;
+          font-size: 25px !important;
         }
       }
       @media (max-width: 640px) {
-        .studio .nav-container {
-          padding: 16px 20px;
+                .studio .hero h1 {
+          font-size: 140px !important;
         }
+        
+        .studio .pablosso {
+          font-size: 90px !important;
+        }
+
+        .jobsy-text {
+          font-size: 13.75px !important;
+        }
+
+        .studio .sub-text1, .studio .sub-text2 {
+          font-size: 7px !important;
+        }
+
+        .studio .nav-container .logo {
+          font-size: 25px !important;
+        }
+        
         .studio .nav-container .links {
-          font-size: clamp(1.226vh, 1vw, 2.158vh);
-          gap: 4px;
+          gap: 8px !important;
+          font-size: 16px !important;
         }
-        .studio .jobsy-text {
-          font-size: 14px;
-        }
-        .studio .section-head h2 {
-          font-size: 3.5vh !important;
+
+        .studio .lang-select {
+          font-size: 25px !important;
         }
         .studio .display {
-          font-size: clamp(12.5vh, 1vw, 15.75vh) !important;
-        }
-        .studio .pablosso {
-          font-size: clamp(7.04vh, 1vw, 8.26vh) !important;
+          font-size: clamp(12.5vh, 1vw, 15.75vh);
         }
         .studio .sub-all {
           height: auto;
         }
-        .studio .sub-text1, .studio .sub-text2 {font-size: 12px;}
         .studio .gallery {
           grid-template-columns: 1fr;
         }
@@ -1266,12 +1286,36 @@
         }
       }
       @media (max-width: 300px) {
+                .studio .hero h1 {
+          font-size: 140px !important;
+        }
+        
+        .studio .pablosso {
+          font-size: 90px !important;
+        }
+
+        .jobsy-text {
+          font-size: 13.75px !important;
+        }
+
+        .studio .sub-text1, .studio .sub-text2 {
+          font-size: 7px !important;
+        }
+
+        .studio .nav-container .logo {
+          font-size: 25px !important;
+        }
+        
+        .studio .nav-container .links {
+          gap: 8px !important;
+          font-size: 16px !important;
+        }
+
+        .studio .lang-select {
+          font-size: 25px !important;
+        }
         .studio .nav-container {
           padding: 14px 10px;
-        }
-        .studio .nav-container .links {
-          font-size: clamp(1.226vh, 1vw, 2.158vh);
-          gap: 4px;
         }
         .studio .gallery {
           grid-template-columns: 1fr;
