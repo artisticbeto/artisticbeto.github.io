@@ -20,7 +20,7 @@ body { overflow-x: hidden; }
 
 /* lighter effects on phones */
 @media (max-width: 720px), (pointer: coarse) {
-  :root { --particle-count: 12; }
+  :root { --particle-count: 0; }
   .global-mouse-glow { display: none !important; }
   .studio .nav-svg { mix-blend-mode: normal; }
   .studio section:not(.hero), .studio footer, .studio .copyright {
@@ -48,7 +48,7 @@ body { overflow-x: hidden; }
   .studio .sub-all { display: none; }
   .studio .subtrans { transform: none; }
   .studio .sub-html {
-    display: block; position: relative; z-index: 2; margin: 3vh auto 0; padding: 0 4px; max-width: 30ch;
+    display: block; position: relative; z-index: 2; margin: 3vh auto 0; padding: 10px 4px 0px 0px; max-width: 30ch;
     text-align: center; font: 15px/1.5 Arial, sans-serif; color: #aba59d;
   }
   .studio .sub-html b { color: var(--studio-clay); text-shadow: 0 0 10px rgba(185,113,218,.7); }

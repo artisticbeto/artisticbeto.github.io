@@ -1230,7 +1230,7 @@
         }
       }
       @media (max-width: 640px) {
-                .studio .hero h1 {
+        .studio .hero h1 {
           font-size: 140px !important;
         }
         
@@ -1286,33 +1286,18 @@
         }
       }
       @media (max-width: 300px) {
-                .studio .hero h1 {
-          font-size: 140px !important;
-        }
-        
-        .studio .pablosso {
-          font-size: 90px !important;
-        }
-
-        .jobsy-text {
-          font-size: 13.75px !important;
-        }
-
-        .studio .sub-text1, .studio .sub-text2 {
-          font-size: 7px !important;
-        }
-
         .studio .nav-container .logo {
-          font-size: 25px !important;
+          font-size: 15px !important;
         }
         
         .studio .nav-container .links {
-          gap: 8px !important;
-          font-size: 16px !important;
+          gap: 0px !important;
+          font-size: 10px !important;
         }
 
         .studio .lang-select {
-          font-size: 25px !important;
+          font-size: 10px !important;
+          margin-left: 7px !important;
         }
         .studio .nav-container {
           padding: 14px 10px;
