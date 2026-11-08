@@ -3,8 +3,6 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { galleryItems, motionItems, piecesData } from "./data";
 import "./styles.css";
-import "./mobile.css";
-import { LITE, COARSE } from "./lite";
 
 /* ---------- translations: [en, ar] ---------- */
 const T = {
@@ -26,7 +24,6 @@ const T = {
   viewer: ["Object viewer", "عارض الأجسام"],
   n3: ["03 — Dimensional", "الأجسام — 03"],
   hint: ["Drag to rotate · Scroll to zoom", "اسحب للتدوير · مرّر للتكبير"],
-  hintTouch: ["Drag to rotate · Pinch to zoom", "اسحب للتدوير · اضغط بإصبعين للتكبير"],
   viewerP: [
     "Every flat piece has a body. This viewer has most if not all of my 3D-work floating in real space, rotate, inspect the grain, watch the light move across the paint.",
     "لكل قطعة مسطّحة جسد. يضم هذا العارض معظم إن لم يكن كل أعمالي ثلاثية الأبعاد وهي تطفو في فضاء حقيقي، فدوّرها وتفحّص نسيجها وراقب الضوء وهو يتحرك عبر الطلاء.",
@@ -94,7 +91,7 @@ function Background() {
     };
 
     let time = 0, frame = 0, last = 0, raf = 0, visible = true;
-    const interval = 1000 / (LITE ? 24 : 30);
+    const interval = 1000 / 30;
 
     const render = (ts) => {
       if (!visible) return;
@@ -216,13 +213,10 @@ function Scribble({ text }) {
 function Nav({ lang, setLang, tr }) {
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef(null);
-  const workRef = useRef(null);
-  const [workOpen, setWorkOpen] = useState(false);
 
   useEffect(() => {
     const close = (e) => {
       if (!langRef.current?.contains(e.target)) setLangOpen(false);
-      if (!workRef.current?.contains(e.target)) setWorkOpen(false);
     };
     document.addEventListener("click", close);
     return () => document.removeEventListener("click", close);
@@ -269,12 +263,12 @@ function Nav({ lang, setLang, tr }) {
             </div>
           </div>
           <div className="links mono">
-            <div className={"work-links" + (workOpen ? " is-open" : "")} ref={workRef}>
-              <button className="work-select" aria-haspopup="true" aria-expanded={workOpen} onClick={() => setWorkOpen((o) => !o)}>{tr("work")}</button>
+            <div className="work-links">
+              <button className="work-select" aria-haspopup="true">{tr("work")}</button>
               <div className="work-dropcontent" role="menu">
-                <a href="#work" role="menuitem" onClick={() => setWorkOpen(false)}>{tr("gallery")}</a>
-                <a href="#motion" role="menuitem" onClick={() => setWorkOpen(false)}>{tr("motion")}</a>
-                <a href="#viewer" role="menuitem" onClick={() => setWorkOpen(false)}>{tr("mesh")}</a>
+                <a href="#work" role="menuitem">{tr("gallery")}</a>
+                <a href="#motion" role="menuitem">{tr("motion")}</a>
+                <a href="#viewer" role="menuitem">{tr("mesh")}</a>
               </div>
             </div>
             <a href="#about">{tr("about")}</a>
@@ -316,9 +310,6 @@ function Hero({ tr }) {
               <tspan>.</tspan>
             </text>
           </svg>
-          <p className="sub-html" aria-hidden="true">
-            {tr("sub1")} {tr("subPre")}<b>{tr("screen")}</b>{" & "}<b>{tr("studio")}</b>.
-          </p>
         </div>
       </div>
     </section>
@@ -347,22 +338,6 @@ const Placeholder = ({ video }) => (
 );
 
 function LazyIframe({ src, title }) {
-  const [armed, setArmed] = useState(!LITE);
-  const id = /embed\/([\w-]+)/.exec(src)?.[1];
-  if (armed || !id) return <EagerFrame src={LITE ? src.replace("autoplay=0", "autoplay=1") : src} title={title} />;
-  return (
-    <button
-      className="yt-facade"
-      aria-label={`Play ${title}`}
-      style={{ backgroundImage: `url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)` }}
-      onClick={() => setArmed(true)}
-    >
-      <span className="yt-play" />
-    </button>
-  );
-}
-
-function EagerFrame({ src, title }) {
   const ref = useRef(null);
   const [url, setUrl] = useState(undefined);
   useEffect(() => {
@@ -410,7 +385,6 @@ function GalleryItem({ item, onOpen }) {
           src={src}
           alt={`${title} — ${meta}`}
           loading="lazy"
-          decoding="async"
           data-failed={failed ? "true" : undefined}
           onError={() => setFailed(true)}
         />
@@ -532,34 +506,14 @@ function Lightbox({ data, onClose }) {
     };
   }, [data.open, onClose]);
 
-  const ptrs = useRef(new Map());
-  const pinch = useRef(0);
-  const spread = () => {
-    const [p, q] = [...ptrs.current.values()];
-    return Math.hypot(p.x - q.x, p.y - q.y);
-  };
   const down = (e) => {
-    const s = st.current;
-    ptrs.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (e.button !== 0 || st.current.scale <= 1) return;
+    Object.assign(st.current, { dragging: true, sx: e.clientX, sy: e.clientY });
+    e.currentTarget.classList.add("is-dragging");
     e.currentTarget.setPointerCapture(e.pointerId);
-    if (ptrs.current.size === 2) pinch.current = spread();
-    else if (e.button === 0 && s.scale > 1) {
-      Object.assign(s, { dragging: true, sx: e.clientX, sy: e.clientY });
-      e.currentTarget.classList.add("is-dragging");
-    }
   };
   const move = (e) => {
     const s = st.current;
-    if (!ptrs.current.has(e.pointerId)) return;
-    ptrs.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (ptrs.current.size === 2) {
-      const d = spread();
-      s.scale = Math.min(4, Math.max(1, s.scale * (d / pinch.current)));
-      pinch.current = d;
-      if (s.scale === 1) { s.x = 0; s.y = 0; } else clamp();
-      apply(false);
-      return;
-    }
     if (!s.dragging || s.scale <= 1) return;
     s.x += e.clientX - s.sx;
     s.y += e.clientY - s.sy;
@@ -569,7 +523,7 @@ function Lightbox({ data, onClose }) {
     apply(false);
   };
   const up = (e) => {
-    ptrs.current.delete(e.pointerId);
+    if (!st.current.dragging) return;
     st.current.dragging = false;
     e.currentTarget.classList.remove("is-dragging");
     if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
@@ -626,7 +580,7 @@ function Motion({ tr }) {
             {video ? (
               <video src={video} muted loop playsInline autoPlay />
             ) : src ? (
-              <img src={src} alt={label} loading="lazy" decoding="async" />
+              <img src={src} alt={label} loading="lazy" />
             ) : (
               <Placeholder video />
             )}
@@ -766,10 +720,10 @@ function Viewer({ tr }) {
     const holder = holderRef.current;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, holder.clientWidth / holder.clientHeight, 0.1, 100);
-    const renderer = new THREE.WebGLRenderer({ antialias: !LITE, alpha: true, powerPreference: "low-power" });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, LITE ? 1.25 : 1.5));
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(holder.clientWidth, holder.clientHeight, false);
-    renderer.shadowMap.enabled = !LITE;
+    renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
@@ -779,7 +733,7 @@ function Viewer({ tr }) {
     const light = (color, intensity, x, y, z, shadow) => {
       const l = new THREE.DirectionalLight(color, intensity);
       l.position.set(x, y, z);
-      if (shadow && !LITE) {
+      if (shadow) {
         l.castShadow = true;
         l.shadow.mapSize.set(1024, 1024);
         l.shadow.bias = -0.0001;
@@ -862,29 +816,9 @@ function Viewer({ tr }) {
     let dragging = false, prevX = 0, prevY = 0;
     let rotY = 0.3, rotX = -0.15, targetY = 0.3, targetX = -0.15, zoom = 6;
     const el = renderer.domElement;
-    const ptrs = new Map();
-    let pinchD = 0;
-    const spread = () => {
-      const [p, q] = [...ptrs.values()];
-      return Math.hypot(p.x - q.x, p.y - q.y);
-    };
-    const onDown = (e) => {
-      ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
-      dragging = ptrs.size === 1;
-      prevX = e.clientX;
-      prevY = e.clientY;
-      if (ptrs.size === 2) pinchD = spread();
-    };
-    const onUp = (e) => { ptrs.delete(e.pointerId); dragging = false; };
+    const onDown = (e) => { dragging = true; prevX = e.clientX; prevY = e.clientY; };
+    const onUp = () => { dragging = false; };
     const onMove = (e) => {
-      if (!ptrs.has(e.pointerId)) return;
-      ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
-      if (ptrs.size === 2) {
-        const d = spread();
-        zoom = Math.max(3, Math.min(10, zoom - (d - pinchD) * 0.02));
-        pinchD = d;
-        return;
-      }
       if (!dragging) return;
       targetY += (e.clientX - prevX) * 0.006;
       targetX = Math.max(-1, Math.min(1, targetX + (e.clientY - prevY) * 0.006));
@@ -897,7 +831,6 @@ function Viewer({ tr }) {
     };
     el.addEventListener("pointerdown", onDown);
     window.addEventListener("pointerup", onUp);
-    window.addEventListener("pointercancel", onUp);
     window.addEventListener("pointermove", onMove);
     el.addEventListener("wheel", onWheel, { passive: false });
 
@@ -906,7 +839,7 @@ function Viewer({ tr }) {
       if (!w || !h) return;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, LITE ? 1.25 : 1.5));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.setSize(w, h, false);
     };
     window.addEventListener("resize", resize);
@@ -947,7 +880,6 @@ function Viewer({ tr }) {
       document.removeEventListener("visibilitychange", kick);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointerup", onUp);
-      window.removeEventListener("pointercancel", onUp);
       window.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerdown", onDown);
       el.removeEventListener("wheel", onWheel);
@@ -970,7 +902,7 @@ function Viewer({ tr }) {
       </div>
       <div className="viewer-wrap">
         <div id="viewer-canvas-holder" ref={holderRef}>
-          <div className="viewer-hint mono">{tr(COARSE ? "hintTouch" : "hint")}</div>
+          <div className="viewer-hint mono">{tr("hint")}</div>
         </div>
         <div className="viewer-controls">
           <p className="reveal-up">{tr("viewerP")}</p>
