@@ -19,19 +19,19 @@ export const galleryItems = [
 // 9
 { title: "Guitar", meta: "3D media · 2023", iframe:"https://www.youtube.com/embed/DX0OzdENM4w?autoplay=0&mute=1&loop=1&playlist=DX0OzdENM4w&controls=0&modestbranding=1" },
 // 10
-{ title: "Stylized Portal", meta: "3D media · 2021", src:"work/portal.gif" },
+{ title: "Stylized Portal", meta: "3D media · 2021", src:"work/portal.webm" },
 // 11
-{ title: "Retro Sun", meta: "3D media · 2020", src:"work/retro.gif" },
+{ title: "Retro Sun", meta: "3D media · 2020", src:"work/retro.webm" },
 // 12
-{ title: "Herobrine", meta: "3D media · 2021", src:"work/animation2.gif"},
+{ title: "Herobrine", meta: "3D media · 2021", src:"work/animation2.webm"},
 // 13
 { title: "Asnem", meta: "3D media · 2025", iframe:"https://www.youtube.com/embed/alBn_2kaItM?autoplay=0&mute=1&loop=1&playlist=alBn_2kaItM&controls=0&modestbranding=1" },
 // 14
-{ title: "Marginalia", meta: "3D media · 2021", src:"work/animation1.gif" },
+{ title: "Marginalia", meta: "3D media · 2021", src:"work/animation1.webm" },
 // 15
 { title: "Disrubted Cube", meta: "3D media · 2020", src:"work/a1.png" },
 // 16
-{ title: "Blackhole", meta: "3D media · 2020", src:"work/blackhole.gif" },
+{ title: "Blackhole", meta: "3D media · 2020", src:"work/blackhole.webm" },
 // 17
 { title: "Random Pose1", meta: "3D media · 2026", src:"work/pose1.png" },
 // 18
@@ -41,16 +41,16 @@ export const galleryItems = [
 // 20
 { title: "Marginalia", meta: "Ink & wash · 2025", src:"" },
 // 21
-{ title: "Random Pool", meta: "3D media · 2020", src:"work/pool.gif" },
+{ title: "Random Pool", meta: "3D media · 2020", src:"work/pool.webm" },
 ];
 
 export const motionItems = [
 // 1
-{ label: "Studio pass · 01",  src:"InMotion/67a5fc6d66b2e.gif" },
+{ label: "Studio pass · 01",  src:"InMotion/67a5fc6d66b2e.webm" },
 // 2
-{ label: "Layering process", src:"InMotion/original-ea9a00d6b6c8ad10d904fa52636ebbbe.gif" },
+{ label: "Layering process", src:"InMotion/original-ea9a00d6b6c8ad10d904fa52636ebbbe.webm" },
 // 3
-{ label: "Detail scan", src:"InMotion/MotionTrails3D-GIF-02.gif" },
+{ label: "Detail scan", src:"InMotion/MotionTrails3D-GIF-02.webm" },
 ];
 
 export const piecesData = [
