@@ -1,8 +1,8 @@
 // Beto Studio — Service Worker
 // Bump CACHE_VERSION whenever you change index.html, CSS, JS, or swap out .glb files
 // so returning visitors pick up the new version instead of a stale cached copy.
-const CACHE_VERSION = "beto-studio-v1";
-const RUNTIME_CACHE = "beto-studio-runtime-v1";
+const CACHE_VERSION = "beto-studio-v2";
+const RUNTIME_CACHE = "beto-studio-runtime-v2";
 
 // Core files that are safe to cache immediately on install.
 // Keep this list small — big binary assets (.glb) are cached on first use instead,

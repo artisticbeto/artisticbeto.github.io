@@ -1,0 +1,14 @@
+/* Skeleton shimmer shown while an image or video is still loading */
+.media-loading {
+  background: linear-gradient(90deg, #1a1714 25%, #2c2822 50%, #1a1714 75%);
+  background-size: 200% 100%;
+  animation: media-shimmer 1.4s linear infinite;
+}
+
+@keyframes media-shimmer {
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-loading { animation: none; }
+}
