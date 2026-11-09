@@ -1217,16 +1217,16 @@
         }
 
         .studio .nav-container .logo {
-          font-size: 25px !important;
+          font-size: 15px !important;
         }
         
         .studio .nav-container .links {
-          gap: 8px !important;
+          gap: 6px !important;
           font-size: 16px !important;
         }
 
         .studio .lang-select {
-          font-size: 25px !important;
+          font-size: 15px !important;
         }
       }
       @media (max-width: 640px) {
