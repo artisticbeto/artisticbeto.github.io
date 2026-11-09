@@ -1217,7 +1217,7 @@
         }
 
         .studio .nav-container .logo {
-          font-size: 15px !important;
+          font-size: 25px !important;
         }
         
         .studio .nav-container .links {
@@ -1226,7 +1226,7 @@
         }
 
         .studio .lang-select {
-          font-size: 15px !important;
+          font-size: 25px !important;
         }
       }
       @media (max-width: 640px) {
@@ -1247,16 +1247,16 @@
         }
 
         .studio .nav-container .logo {
-          font-size: 25px !important;
+          font-size: 15px !important;
         }
         
         .studio .nav-container .links {
-          gap: 8px !important;
+          gap: 6px !important;
           font-size: 16px !important;
         }
 
         .studio .lang-select {
-          font-size: 25px !important;
+          font-size: 15px !important;
         }
         .studio .display {
           font-size: clamp(12.5vh, 1vw, 15.75vh);
